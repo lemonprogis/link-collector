@@ -2,7 +2,7 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
   if (request.action == "getPageLinks") {
     pageLinks = request.pageLinks;
     buildTable(pageLinks, linkTable);
-    message.innerHTML = "<h3>Colected " + pageLinks.length + " links</h3>";
+    message.innerHTML = "<h5><i>Colected " + pageLinks.length + " links</i></h5>";
   }
 });
 
@@ -11,7 +11,9 @@ function onWindowLoad() {
   var pageLinks = [];
   var message = document.querySelector('#message');
   var linkTable = document.querySelector('#linkTable');
+  // adding event listeners
   document.querySelector('#exportBtn').addEventListener('click', exportTable);
+  document.querySelector('#filterInput').addEventListener('keyup', filterTable);
 
   chrome.tabs.executeScript(null, {
     file: "collectLinks.js"
@@ -43,6 +45,25 @@ function exportTable() {
   downloadLink.style.display = "none";
   document.body.appendChild(downloadLink);
   downloadLink.click();
+}
+
+function filterTable() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("filterInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("linkTable");
+  tr = table.getElementsByTagName("tr");
+
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
 }
 
 window.onload = onWindowLoad;

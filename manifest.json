@@ -1,6 +1,6 @@
 {
   "name": "Link Collector",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Collect all unique links in a page. Useful for getting information from a sitemap or other site with tons of links.",
   "permissions": [
     "tabs",
